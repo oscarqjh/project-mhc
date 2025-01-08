@@ -1,0 +1,16 @@
+{
+  "appId": "com.oscarqjh.project-mhc",
+  "files": ["dist-react", "src/electron"],
+  "extraResources": ["src/electron/preload.cjs", "src/assets/**"],
+  "icon": "./mh_logo.png",
+  "mac": {
+    "target": "dmg"
+  },
+  "linux": {
+    "target": "AppImage",
+    "category": "Utility"
+  },
+  "win": {
+    "target": ["portable", "msi"]
+  }
+}
