@@ -107,6 +107,6 @@ app.on("ready", async () => {
   // configureMenu(); // Create the menu
   ipcMain.handle("getStaticData", () => getStaticData()); // Handle getStaticData
   printStaticData(); // Print static data
-  pollResources(); // Start polling resources
+  // pollResources(); // Start polling resources
   monitorNavigation(windows.gameView, windows.clientView); // Monitor navigation
 });

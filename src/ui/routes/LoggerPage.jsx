@@ -37,7 +37,8 @@ export default function LoggerPage() {
                 "grandchild" +
                 lastLog.children[lastLog.children.length - 1].children.length,
               timestamp: log.timestamp,
-              location: log.subtab,
+              location: log.subtab ? log.subtab : log.tab,
+              type: log.type,
             };
 
             const updatedLastLog = {
@@ -71,7 +72,9 @@ export default function LoggerPage() {
         const child = {
           id: "child" + lastLog.children.length,
           timestamp: log.timestamp,
-          location: log.tab,
+          location: log.tab ? log.tab : log.location,
+          subloc: log.subtab ? log.subtab : null,
+          type: log.type,
         };
 
         // Add child to the previous log (make sure to not mutate state)
@@ -93,6 +96,7 @@ export default function LoggerPage() {
           timestamp: log.timestamp,
           type: log.type,
           location: log.location,
+          subloc: log.tab ? log.tab : null,
         };
         setLogs((prevLogs) => [newLog, ...prevLogs]);
       }
@@ -108,9 +112,10 @@ export default function LoggerPage() {
         <div className="m-2">Activity Logger</div>
         <div>
           <Accordion type="multiple" className="w-[800px] rounded-none">
-            {logs.map((log, idx) => (
-              <LoggerCard key={idx} log={log} />
-            ))}
+            {logs.map((log, idx) => {
+              const isEven = idx % 2 === 0;
+              return <LoggerCard key={idx} log={log} iseven={isEven} />;
+            })}
           </Accordion>
         </div>
       </div>

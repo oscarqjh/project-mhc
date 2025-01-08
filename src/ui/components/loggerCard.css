@@ -1,3 +1,23 @@
 .notclickable button {
   cursor: default;
 }
+
+.evenColor button {
+  background-color: #09090b;
+}
+
+.oddColor button {
+  background-color: #18181b;
+}
+
+.childColor button {
+  background-color: #27272a;
+}
+
+.grandchildColor button {
+  background-color: #3f3f46;
+}
+
+.AccordionItem button {
+  padding: 0.4em 1em;
+}

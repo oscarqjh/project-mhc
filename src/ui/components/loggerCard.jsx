@@ -2,15 +2,23 @@ import { AccordionItem } from "@radix-ui/react-accordion";
 import { AccordionContent, AccordionTrigger } from "./ui/accordion";
 import { cn } from "@/lib/utils";
 import "./loggerCard.css";
+import LoggerContent from "./loggerContent";
 
-export default function LoggerCard({ log, level = 0, islast = false }) {
+export default function LoggerCard({ log, iseven, level = 0, islast = false }) {
   return (
     <>
       <AccordionItem
         value={log.id}
         className={cn(
-          "rounded-none hover:border-transparent",
-          !log.children && "notclickable"
+          !log.children && "notclickable",
+          level === 2
+            ? "grandchildColor"
+            : level === 1
+            ? "childColor"
+            : iseven
+            ? "evenColor"
+            : "oddColor",
+          "AccordionItem"
         )}
         disabled={!log.children}
       >
@@ -24,17 +32,7 @@ export default function LoggerCard({ log, level = 0, islast = false }) {
                 {!islast ? <div>┡</div> : <div>┗</div>}
               </>
             )}
-            {log.message ? (
-              <>
-                <div className="mx-2">{log.timestamp}</div>
-                <div>{log.message}</div>
-              </>
-            ) : (
-              <>
-                <div className="mx-2">{log.timestamp}</div>
-                <div>Player navigated to {log.location}</div>
-              </>
-            )}
+            <LoggerContent log={log} />
           </div>
         </AccordionTrigger>
 
