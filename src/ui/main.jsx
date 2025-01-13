@@ -5,6 +5,7 @@ import "./index.css";
 
 import App from "./routes/App.jsx";
 import LoggerPage from "./routes/loggerPage.jsx";
+import ProfilePage from "./routes/ProfilePage";
 
 const router = createHashRouter([
   {
@@ -14,6 +15,10 @@ const router = createHashRouter([
       {
         index: true,
         element: <LoggerPage />,
+      },
+      {
+        path: "profile",
+        element: <ProfilePage />,
       },
     ],
   },

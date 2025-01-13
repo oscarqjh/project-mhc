@@ -23,3 +23,12 @@ dist-react
 *.njsproj
 *.sln
 *.sw?
+
+# LevelDB
+LOCK
+CURRENT
+LOG
+LOG.old
+MANIFEST-*
+*.ldb
+*.log

@@ -111,6 +111,25 @@ function getComponent(log) {
     );
   }
 
+  // display for forum logs
+  if (log.location === "forum") {
+    // display for child logs
+    if (String(log.id).includes("child")) {
+      return (
+        <>
+          <div className="mx-2">{log.timestamp}</div>
+          <div>Player is rummaging through the forum</div>
+        </>
+      );
+    }
+    return (
+      <>
+        <div className="mx-2">{log.timestamp}</div>
+        <div>Player is looking at the forum</div>
+      </>
+    );
+  }
+
   // default case
   return (
     <>

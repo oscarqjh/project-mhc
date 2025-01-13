@@ -5,7 +5,7 @@ electron.contextBridge.exposeInMainWorld("electron", {
   getStaticData: () => electron.ipcRenderer.invoke("getStaticData"),
   send: (channel, data) => {
     // Whitelist of channels for sending data from renderer to main process
-    const validChannels = ["logEvent"];
+    const validChannels = ["logEvent", "AjaxRequest"];
     if (validChannels.includes(channel)) {
       electron.ipcRenderer.send(channel, data);
     }
@@ -20,4 +20,5 @@ electron.contextBridge.exposeInMainWorld("electron", {
       electron.ipcRenderer.on(channel, (event, ...args) => func(...args));
     }
   },
+  sendMsg: () => electron.ipcRenderer.send("msg", "Hello from the renderer"),
 });

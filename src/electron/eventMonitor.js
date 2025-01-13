@@ -1,6 +1,6 @@
 import { shell } from "electron";
 
-export function monitorNavigation(gameView, clientView, mainWindow) {
+export function monitorNavigation(gameView, clientView) {
   let gameViewReady = false;
   let clientViewReady = false;
 
@@ -101,6 +101,10 @@ export function monitorNavigation(gameView, clientView, mainWindow) {
 
   // Function to set up event listeners
   function startMonitoring() {
+    gameView.webContents.on("did-navigate", (event, url) => {
+      console.log(`Navigated to ${url}`);
+    });
+
     gameView.webContents.on("did-navigate-in-page", (event, url) => {
       console.log(`Navigated in page to ${url}`);
       const urlObj = new URL(url); // make url object

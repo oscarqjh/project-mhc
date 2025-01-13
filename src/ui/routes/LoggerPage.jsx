@@ -1,19 +1,11 @@
 import LoggerCard from "@/components/loggerCard";
 import { Accordion } from "@/components/ui/accordion";
+import { useClient } from "@/hooks/useClient";
 import { useEffect, useState } from "react";
 
-const SAMPLE_LOGS = [
-  {
-    id: 1,
-    timestamp: new Date().toLocaleTimeString(),
-    message: "Client connected",
-    location: "system",
-    type: "system",
-  },
-];
-
 export default function LoggerPage() {
-  const [logs, setLogs] = useState(SAMPLE_LOGS);
+  const { logs, setLogs } = useClient();
+
   useEffect(() => {
     // Listening for the 'logEvent' channel event
     window.electron.receive("logEvent", (log) => {

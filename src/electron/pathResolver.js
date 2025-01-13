@@ -17,3 +17,11 @@ export function getUiPath() {
 export function getAssetPath() {
   return path.join(app.getAppPath(), isDev() ? "." : "..", "/src/assets");
 }
+
+export function getDbPath() {
+  return path.join(
+    app.getAppPath(),
+    isDev() ? "." : "..",
+    "/src/electron/database"
+  );
+}

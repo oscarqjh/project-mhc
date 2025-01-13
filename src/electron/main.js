@@ -1,17 +1,19 @@
 import { app, BaseWindow, ipcMain, WebContentsView } from "electron";
 import path from "path";
-import { isDev } from "./utils.js";
+import { isDev, injectScript } from "./utils.js";
 import {
   getStaticData,
   pollResources,
   printStaticData,
 } from "./resourceManager.js";
-import { getPreloadPath } from "./pathResolver.js";
+import { getDbPath, getPreloadPath } from "./pathResolver.js";
 import { configureTray } from "./tray.js";
 import { configureMenu } from "./menu.js";
 import { monitorNavigation } from "./eventMonitor.js";
+import { monitorNetwork } from "./networkMonitor.js";
+import { Level } from "level";
 
-const DEV_TOOL_MODE = 1; // 0: Left view, 1: Right view, 2: Both views
+const DEV_TOOL_MODE = 0; // 0: Left view, 1: Right view, 2: Both views
 
 // Util function to wait for the server to start
 const waitForServer = (url) =>
@@ -78,7 +80,7 @@ function createWindow() {
       clientView.webContents.openDevTools({
         mode: "detach",
       });
-    } else {
+    } else if (DEV_TOOL_MODE === 2) {
       gameView.webContents.openDevTools({
         mode: "detach",
       });
@@ -101,12 +103,28 @@ function createWindow() {
   };
 }
 
+// Function to initialise DB
+function initDB() {
+  const db = new Level(getDbPath(), { valueEncoding: "json" });
+  return db;
+}
+
 app.on("ready", async () => {
-  const windows = createWindow(); // Create the window
+  // Initialise the DB
+  const db = initDB();
+
+  for await (const [key, value] of db.iterator()) {
+    console.log("key:", key, "value:", value);
+  }
+
+  // Create the window
+  const windows = createWindow();
+
+  // App configuration
   configureTray(windows.win); // Create the tray icon
-  // configureMenu(); // Create the menu
-  ipcMain.handle("getStaticData", () => getStaticData()); // Handle getStaticData
-  printStaticData(); // Print static data
-  // pollResources(); // Start polling resources
+  injectScript(windows.gameView); // Inject script
+
+  // App functionality
   monitorNavigation(windows.gameView, windows.clientView); // Monitor navigation
+  monitorNetwork(windows.gameView, windows.clientView); // Monitor network
 });

@@ -1,10 +1,19 @@
+import { ClientProvider } from "@/hooks/useClient";
 import React from "react";
-import { Link, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 
 function App() {
   return (
     <>
-      <Outlet />
+      <ClientProvider>
+        <div className="flex flex-col items-start justify-items-start h-screen w-screen">
+          <nav>
+            <NavLink to="/">Logger</NavLink>
+            <NavLink to="/profile">Profile</NavLink>
+          </nav>
+          <Outlet />
+        </div>
+      </ClientProvider>
     </>
   );
 }

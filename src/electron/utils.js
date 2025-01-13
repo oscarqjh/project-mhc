@@ -29,3 +29,31 @@ export function validateEventFrame(frame) {
 export function isDarwin() {
   return process.platform === "darwin";
 }
+
+const jsCode = `
+    // Preserve the original XMLHttpRequest open method
+    const originalXhrOpen = XMLHttpRequest.prototype.open;
+
+    // Override the open method to intercept requests
+    XMLHttpRequest.prototype.open = function (...args) {
+      this.addEventListener("load", () => {
+        const responseText = this.responseText;
+        //console.log("XHR Response:", responseText); // Add contextual message
+        window.electron.send("AjaxRequest", responseText);
+      });
+
+      // Call the original open method with the original arguments
+      return originalXhrOpen.apply(this, args);
+    };
+  `;
+
+export function injectScript(gameView) {
+  gameView.webContents
+    .executeJavaScript(jsCode)
+    .then(() => {
+      console.log("XHR monitoring enabled");
+    })
+    .catch((err) => {
+      console.error("Failed to inject script: ", err);
+    });
+}
